@@ -13,27 +13,23 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'data_manager.dart';
 
 class AllvideoPlayer extends StatelessWidget {
-  final playercontroller = Get.put(AllPlayerContoller());
-  
-  AllvideoPlayer({Key? key,  
-  // this.index = 0, required this.urls
-  })
-      : super(key: key);
+ static final playercontroller = Get.find<AllPlayerContoller>()
+    ..inisializesController();
 
+  AllvideoPlayer({
+    Key? key,
+    // this.index = 0, required this.urls
+  }) : super(key: key);
 
   // _AllvideoPlayerState createState() => _AllvideoPlayerState();
 // }
 
 // class _AllvideoPlayerState extends State<AllvideoPlayer> {
-  late FlickManager flickManager;
-  late DataManager dataManager;
- 
+   FlickManager flickManager = playercontroller.flickManager;
+   DataManager dataManager = playercontroller.dataManager;
 
- 
-    // Recentlistingmode obj = Recentlistingmode(recentpath: playercontroller. urls[playercontroller. index]);
-    // getRecentStatus(path: playercontroller. urls[playercontroller. index]);
-    
-    
+  // Recentlistingmode obj = Recentlistingmode(recentpath: playercontroller. urls[playercontroller. index]);
+  // getRecentStatus(path: playercontroller. urls[playercontroller. index]);
 
   //   super.initState();
   //   flickManager = FlickManager(
@@ -55,7 +51,8 @@ class AllvideoPlayer extends StatelessWidget {
   // }
 
   skipToVideo(String url) {
-    flickManager.handleChangeVideo(VideoPlayerController.file(File(url[playercontroller.index])));
+    flickManager.handleChangeVideo(
+        VideoPlayerController.file(File(url[playercontroller.index])));
   }
 
   @override
@@ -71,7 +68,6 @@ class AllvideoPlayer extends StatelessWidget {
       },
       child: Column(
         children: [
-        
           Container(
             height: MediaQuery.of(context).size.height,
             child: FlickVideoPlayer(
@@ -95,5 +91,3 @@ class AllvideoPlayer extends StatelessWidget {
     );
   }
 }
-
-

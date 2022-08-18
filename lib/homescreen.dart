@@ -64,7 +64,7 @@ class Homescreen extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () { 
               if (recentDB.values.isEmpty) {
-                 allvideocontroller.urls =fetchedVideosPath;
+                 allvideocontroller.urls = fetchedVideosPath;
 
 
                 Navigator.push(context, MaterialPageRoute(builder: (context) {

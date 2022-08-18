@@ -23,8 +23,8 @@ final ScrollController _scrollController = ScrollController();
 
 class AllVideoTile extends StatelessWidget {
   final allvideocontroller = Get.find<AllPlayerContoller>();
-   AllVideoTile({Key? key}) : super(key: key);
-
+  AllVideoTile({Key? key}) : super(key: key);
+  @override
   Widget build(BuildContext context) {
     double _w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -41,127 +41,133 @@ class AllVideoTile extends StatelessWidget {
               //     :
               if (videoList.isEmpty) {
                 hasMoreData = false;
-              }
-              return ListView.builder(
-                cacheExtent: 9999,
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return ListView.builder(
+                  cacheExtent: 9999,
 
-                controller: _scrollController,
-                padding: EdgeInsets.all(_w / 30),
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
-                itemCount: hasMoreData
-                    ? videoList.values.length
-                    : videoList.values.length + 1, ///////
-                //video Length.................
-                ///
-                itemBuilder: (BuildContext context, int index) {
-                  DbVideplayer? video = videoDB.getAt(index);
-                  if (index < videoList.values.length) {
-                    return AnimationConfiguration.staggeredList(
-                      position: index,
-                      delay: const Duration(milliseconds: 100),
-                      child: SlideAnimation(
-                        duration: const Duration(milliseconds: 2500),
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        child: FadeInAnimation(
-                          curve: Curves.fastLinearToSlowEaseIn,
+                  controller: _scrollController,
+                  padding: EdgeInsets.all(_w / 30),
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  itemCount: hasMoreData
+                      ? videoList.values.length
+                      : videoList.values.length + 1, ///////
+                  //video Length.................
+                  ///
+                  itemBuilder: (BuildContext context, int index) {
+                    DbVideplayer? video = videoDB.getAt(index);
+                    if (index < videoList.values.length) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        delay: const Duration(milliseconds: 100),
+                        child: SlideAnimation(
                           duration: const Duration(milliseconds: 2500),
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: _w / 15),
-                            height: _w / 4,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 40,
-                                  spreadRadius: 10,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: ListTile(
-                                      onTap: () => Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) {
-                                                allvideocontroller.urls = fetchedVideosPath;
-                                                allvideocontroller.index = index;
-                                                return   AllvideoPlayer(
-                                                    // urls: fetchedVideosPath,
-                                                    // index: index,
-                                                  );
-                                              }
-                                                
-                                                  )),
-                                      title: Padding(
-                                        padding: const EdgeInsets.all(15),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 100,
-                                              height: 200,
-                                              child: Text(
-                                                video!.videoName.toString(),
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          child: FadeInAnimation(
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            duration: const Duration(milliseconds: 2500),
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: _w / 15),
+                              height: _w / 4,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 40,
+                                    spreadRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: ListTile(
+                                        onTap: () {
+                                          allvideocontroller.urls =
+                                              fetchedVideosPath;
+                                          allvideocontroller.index = index;
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return AllvideoPlayer(
+                                                // urls: fetchedVideosPath,
+                                                // index: index,
+                                                );
+                                          }));
+                                        },
+                                        title: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 100,
+                                                height: 200,
+                                                child: Text(
+                                                  video!.videoName.toString(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      leading: Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: SizedBox(
-                                            height: 200,
-                                            width: 90,
-                                            child: Center(
-                                              child: FutureBuilder(
-                                                future: getThumbnail(
-                                                    video.videoPath.toString()),
-                                                builder: (context,
-                                                        AsyncSnapshot<String?>
-                                                            snapshot) =>
-                                                    snapshot.hasData
-                                                        ? Image.file(File(
-                                                            snapshot.data!))
-                                                        : Center(
-                                                          child: Loading(),
-                                                          ),
-                                              ),
-                                            )),
-                                      ),
-                                      trailing: getPopup(
-                                          path: video.videoPath,
-                                          context: context)),
-                                ),
-                              ],
+                                        leading: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: SizedBox(
+                                              height: 200,
+                                              width: 90,
+                                              child: Center(
+                                                child: FutureBuilder(
+                                                  future: getThumbnail(video
+                                                      .videoPath
+                                                      .toString()),
+                                                  builder: (context,
+                                                          AsyncSnapshot<String?>
+                                                              snapshot) =>
+                                                      snapshot.hasData
+                                                          ? Image.file(File(
+                                                              snapshot.data!))
+                                                          : Center(
+                                                              child: Loading(),
+                                                            ),
+                                                ),
+                                              )),
+                                        ),
+                                        trailing: getPopup(
+                                            path: video.videoPath,
+                                            context: context)),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  } else {
-                    return const ListTile(
-                      title: Text(
-                        "No more Videos ",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    );
-                  }
-                },
-              );
+                      );
+                    } else {
+                      return const ListTile(
+                        title: Text(
+                          "No more Videos ",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    }
+                  },
+                );
+              }
             }),
       ),
     );

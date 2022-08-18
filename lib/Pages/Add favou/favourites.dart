@@ -67,13 +67,13 @@ class Favirote extends StatelessWidget {
                                   ),
                                   child: ListTile(
                                       onTap: () {
-                                        List<String> result;
-                                        result = getList(favList.values.toList());
+                                        
+                                        allvideocontroller.urls = getList(favList.values.toList());
+                                        allvideocontroller.index = index;
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) {
-                                              allvideocontroller.urls = result;
-                                              allvideocontroller.index = index;
+                                              
                                               return AllvideoPlayer(
                                               // urls: result,
                                               // index: index,

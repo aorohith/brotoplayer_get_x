@@ -19,7 +19,13 @@ class AllPlayerContoller extends GetxController {
     Recentlistingmode obj = Recentlistingmode(recentpath: urls[index]);
     getRecentStatus(path: urls[index]);
     //
-    flickManager = FlickManager(
+  
+
+    super.onReady();
+  }
+
+  void inisializesController(){
+      flickManager = FlickManager(
         videoPlayerController: VideoPlayerController.file(
           File(
             urls[index],
@@ -28,9 +34,8 @@ class AllPlayerContoller extends GetxController {
         onVideoEnd: () {
           dataManager.skipToNextVideo(Duration(seconds: 5));
         });
-
     dataManager = DataManager(flickManager: flickManager, urls: urls);
-    super.onReady();
+
   }
 
   skipToVideo(String url) {
